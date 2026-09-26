@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Activity | RiseX</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="activity-container">
+
+        <!-- RISEX NAVBAR -->
+
+        <header class="risex-navbar">
+
+            <a href="index.html" class="risex-brand">
+
+                <div class="risex-logo">
+                    <img src="risex-logo.png" alt="RiseX">
+                </div>
+
+                <div>
+                    <span class="risex-name">RiseX</span>
+                    <span class="risex-tagline">
+                        DISCOVER • COMPETE • RISE
+                    </span>
+                </div>
+
+            </a>
+
+
+            <nav class="risex-nav">
+
+                <a href="opportunities.html" class="nav-link">
+                    Discover
+                </a>
+
+                <a href="activity.html" class="nav-link active">
+                    ⭐ My Activity
+                </a>
+
+                <a href="selection.html" class="nav-link">
+                    Edit Profile
+                </a>
+
+                <button id="logoutBtn" class="nav-logout" onclick="window.location.href='login.html'">
+                    Logout
+                </button>
+
+            </nav>
+
+        </header>
+
+
+        <!-- PAGE HERO -->
+
+        <section class="activity-hero">
+
+            <div class="activity-hero-content">
+
+                <span class="activity-label">
+                     YOUR SPACE
+                </span>
+
+                <h1>
+                    Saved & History
+                </h1>
+
+                <p>
+                    Keep track of opportunities you've saved
+                    and recently explored.
+                </p>
+
+            </div>
+
+            <div class="activity-hero-decoration">
+                ✨
+            </div>
+
+        </section>
+
+
+        <!-- SAVED -->
+
+        <section class="activity-section">
+
+            <div class="activity-section-header">
+
+                <div class="activity-section-title">
+
+                    <div class="activity-section-icon saved-icon">
+                        ⭐
+                    </div>
+
+                    <div>
+                        <h2>Saved Opportunities</h2>
+                        <p>
+                            Opportunities you've saved for later.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="savedList" class="activity-grid"></div>
+
+        </section>
+
+
+        <!-- HISTORY -->
+
+        <section class="activity-section">
+
+            <div class="activity-section-header">
+
+                <div class="activity-section-title">
+
+                    <div class="activity-section-icon history-icon">
+                        🕘
+                    </div>
+
+                    <div>
+                        <h2>Recently Viewed</h2>
+                        <p>
+                            Opportunities you've recently explored.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <button id="clearHistory" class="clear-btn">
+                    Clear History
+                </button>
+
+            </div>
+
+
+            <div id="historyList" class="activity-grid"></div>
+
+        </section>
+
+
+    </main>
+
+    <script>
+
+        const savedList = document.getElementById("savedList");
+        const historyList = document.getElementById("historyList");
+        const clearHistory = document.getElementById("clearHistory");
+
+
+        // =============================
+        // SAVED OPPORTUNITIES
+        // =============================
+
+        function getSaved() {
+
+            return JSON.parse(
+                localStorage.getItem("savedOpportunities") || "[]"
+            );
+
+        }
+
+
+        function displaySaved() {
+
+            const saved = getSaved();
+
+            if (saved.length === 0) {
+
+                savedList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⭐</div>
+                        <h3>No saved opportunities yet</h3>
+                        <p>
+                            Click "☆ Save" on an opportunity to save it here.
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            savedList.innerHTML = saved.map(opportunity => `
+
+                <article class="activity-card">
+
+                    <div class="activity-card-icon">
+                        ⭐
+                    </div>
+
+                    <div class="activity-card-content">
+
+                        <h3>
+                            ${opportunity.title || "Untitled Opportunity"}
+                        </h3>
+
+                        <a
+                            href="${opportunity.url || "#"}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="view-btn"
+                        >
+                            View Opportunity 
+                        </a>
+
+                    </div>
+
+                </article>
+
+            `).join("");
+
+        }
+
+
+        // =============================
+        // HISTORY
+        // =============================
+
+        function getHistory() {
+
+            return JSON.parse(
+                localStorage.getItem("opportunityHistory") || "[]"
+            );
+
+        }
+
+
+        function displayHistory() {
+
+            const history = getHistory();
+
+            if (history.length === 0) {
+
+                historyList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🕘</div>
+                        <h3>No history yet</h3>
+                        <p>
+                            Opportunities you view will appear here.
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            historyList.innerHTML = history.map(opportunity => {
+
+                const viewedDate = opportunity.viewedAt
+                    ? new Date(opportunity.viewedAt).toLocaleString(
+                        "en-IN",
+                        {
+                            day: "numeric",
+                            month: "short",
+                            hour: "numeric",
+                            minute: "2-digit"
+                        }
+                    )
+                    : "Recently viewed";
+
+
+                return `
+
+                    <article class="activity-card">
+
+                        <div class="activity-card-icon">
+                            🕘
+                        </div>
+
+                        <div class="activity-card-content">
+
+                            <h3>
+                                ${opportunity.title || "Untitled Opportunity"}
+                            </h3>
+
+                            <p class="viewed-time">
+                                Viewed ${viewedDate}
+                            </p>
+
+                            <a
+                                href="${opportunity.url || "#"}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="view-btn"
+                            >
+                                View Again
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            }).join("");
+
+        }
+
+
+        // =============================
+        // CLEAR HISTORY
+        // =============================
+
+        clearHistory.addEventListener("click", () => {
+
+            const history = getHistory();
+
+            if (history.length === 0) {
+                return;
+            }
+
+            const confirmed = confirm(
+                "Clear your recently viewed opportunities?"
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            localStorage.removeItem("opportunityHistory");
+
+            displayHistory();
+
+        });
+
+
+        // =============================
+        // START
+        // =============================
+
+        displaySaved();
+        displayHistory();
+
+    </script>
+
+</body>
+
+</html>

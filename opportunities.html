@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Your Opportunities | RiseX</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="opportunities-container">
+
+<header class="risex-navbar">
+
+    <a href="selection.html" class="risex-brand">
+        <div class="risex-logo">
+            <img src="risex-logo.png" alt="RiseX">
+        </div>
+
+        <div>
+            <span class="risex-name">RiseX</span>
+            <span class="risex-tagline">DISCOVER • COMPETE • RISE</span>
+        </div>
+    </a>
+
+    <nav class="risex-nav">
+        <a href="opportunities.html" class="nav-link active">
+            Discover
+        </a>
+
+        <a href="activity.html" class="nav-link">
+            ⭐ My Activity
+        </a>
+
+        <a href="selection.html" class="nav-link">
+            Edit Profile
+        </a>
+
+        <button id="logoutBtn" class="nav-logout">
+            Logout
+        </button>
+    </nav>
+
+</header>
+
+        <div class="filters">
+
+    <button class="filter-btn active" data-filter="all">
+        All
+    </button>
+
+    <button class="filter-btn" data-filter="match">
+        🎯 Best Match
+    </button>
+
+    <button class="filter-btn" data-filter="hackathon">
+        💻 Hackathons
+    </button>
+
+    <button class="filter-btn" data-filter="competition">
+        🏆 Competitions
+    </button>
+
+    <button class="filter-btn" data-filter="olympiad">
+        🧠 Olympiads
+    </button>
+
+    <button class="filter-btn" data-filter="online">
+        🌐 Online
+    </button>
+
+    <button class="filter-btn" data-filter="offline">
+        📍 Offline
+    </button>
+
+    <button class="filter-btn" data-filter="free">
+        🆓 Free
+    </button>
+
+    <button class="filter-btn" data-filter="closing">
+    🔥 Closing Soon
+</button>
+</div>
+
+
+        <section class="results-info">
+
+            <div>
+                <h2>Your Matches</h2>
+                <p id="resultsCount">Finding opportunities...</p>
+            </div>
+
+            <select id="sortOptions">
+                <option value="match">Best Match</option>
+                <option value="deadline">Deadline Soon</option>
+            </select>
+
+        </section>
+
+
+        <section id="opportunityGrid" class="opportunity-grid">
+
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Scanning opportunities...</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="opportunities.js"></script>
+
+</body>
+</html>
