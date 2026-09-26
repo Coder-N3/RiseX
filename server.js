@@ -5,7 +5,7 @@ const path = require("path");
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // API
 app.get("/api/opportunities", async (req, res) => {
@@ -36,14 +36,18 @@ app.get("/api/opportunities", async (req, res) => {
     }
 });
 
-// Open login page first // not working for now fix it later 
+// Serve all frontend files
+app.use(express.static(__dirname));
+
+// Open login page first
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "login.html"));
 });
 
-// Serve frontend
-app.use(express.static("."));
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server running at http://localhost:${PORT}`);
+    });
+}
 
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+module.exports = app;
